@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Leif &amp; Virna · Passaporte</title>
+<meta name="description" content="10 de dezembro de 2026 · Toque para abrir o convite.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Leif &amp; Virna">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://cerimonialconvite.github.io/casamento-leif-e-virna/">
+<meta property="og:title" content="Leif &amp; Virna · Passaporte">
+<meta property="og:description" content="10 de dezembro de 2026 · Toque para abrir o convite.">
+<meta property="og:image" content="https://cerimonialconvite.github.io/casamento-leif-e-virna/img/og.jpg">
+<meta property="og:image:secure_url" content="https://cerimonialconvite.github.io/casamento-leif-e-virna/img/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="639">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="img/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cutive&family=Cormorant+Garamond:wght@500&display=swap" rel="stylesheet">
+<link rel="preload" href="img/capa.jpg" as="image">
+<style>
+  :root{ --papel:#f6f5f2; --ouro:#b3883e; --ouro-escuro:#a07a35; --marrom:#7a5528; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--papel);height:100%}
+  body{font-family:"Cutive","Courier New",monospace;color:var(--marrom);-webkit-tap-highlight-color:transparent}
+
+  /* ---------- abertura ---------- */
+  .tela{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#efe9df;z-index:10;transition:opacity .9s ease;overflow:hidden}
+  .tela.oculta{opacity:0;pointer-events:none}
+  .quadro{position:relative;height:100%;width:100%;max-width:calc(100vh * 9 / 16);max-height:calc(100vw * 16 / 9)}
+  .quadro img,.quadro video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .fundo{position:absolute;inset:-60px;background:url(img/capa.jpg) center/cover;filter:blur(28px) saturate(.9);opacity:.9}
+  #animacao .fundo{transition:opacity 9s linear}
+  #animacao.tocando .fundo{opacity:0}
+  #animacao{background:#fff}
+  #capa{cursor:pointer}
+  #capa .pulso{position:absolute;left:50%;top:60%;width:27%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;animation:pulso 2.4s ease-in-out infinite}
+  @keyframes pulso{0%,100%{box-shadow:0 0 0 0 rgba(179,136,62,0)}50%{box-shadow:0 0 30px 8px rgba(179,136,62,.28)}}
+  #pular{position:absolute;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));padding:8px 14px;border:1px solid rgba(160,122,53,.5);border-radius:30px;background:rgba(246,245,242,.75);color:var(--ouro-escuro);font:500 15px "Cormorant Garamond",Georgia,serif;letter-spacing:.08em;opacity:0;transition:opacity .6s}
+  #animacao.mostra-pular #pular{opacity:1}
+  #brilho{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:20;transition:opacity .7s ease}
+
+  /* ---------- convite ---------- */
+  #convite{max-width:540px;margin:0 auto;background:var(--papel);opacity:0;transition:opacity .8s ease;box-shadow:0 0 40px rgba(120,90,40,.08)}
+  #convite.visivel{opacity:1}
+  .arte{position:relative;--u:calc(min(100vw, 540px) / 1080)}
+  .faixa{position:relative;width:100%}
+  .faixa canvas{display:block;width:100%;height:auto}
+  .camada{position:absolute;pointer-events:none}
+
+  /* fade subindo (base) */
+  .entra{opacity:0;transform:translateY(24px);transition:opacity 1.1s ease,transform 1.1s ease}
+  .entra.visto{opacity:1;transform:none}
+
+  /* brilho de folha de ouro */
+  .reflexo{position:absolute;left:0;width:100%;pointer-events:none;
+    background:linear-gradient(110deg,rgba(255,250,232,0) 0%,rgba(255,250,232,0) 44%,rgba(255,251,236,.9) 50%,rgba(255,250,232,0) 56%,rgba(255,250,232,0) 100%);
+    background-size:300% 100%;background-position:0 0;background-repeat:no-repeat;
+    -webkit-mask-size:100% 100%;mask-size:100% 100%}
+  .faixa.visto .reflexo{animation:reflexo 7s ease-in-out infinite;animation-delay:var(--atraso,1.2s)}
+  @keyframes reflexo{0%{background-position:0 0}32%{background-position:100% 0}100%{background-position:100% 0}}
+  .reflexo.m-brasao{-webkit-mask-image:url(img/m-brasao.png);mask-image:url(img/m-brasao.png)}
+  .reflexo.m-nomes{-webkit-mask-image:url(img/m-nomes.png);mask-image:url(img/m-nomes.png)}
+
+  /* rota com avião */
+  .rota{left:0;top:0;width:100%;height:100%;overflow:visible}
+  .rota circle{fill:var(--marrom);opacity:0;transition:opacity .25s ease}
+  .rota circle.on{opacity:1}
+  .rota .aviao{fill:var(--ouro);opacity:0}
+
+  /* contagem — painel de embarque */
+  .embarque{left:0;width:100%;text-align:center;opacity:0;transform:translateY(14px);transition:opacity 1.1s ease,transform 1.1s ease}
+  .faixa.visto .embarque{opacity:1;transform:none;transition-delay:.3s}
+  .embarque h2{font-weight:400;font-size:calc(34 * var(--u));letter-spacing:.32em;padding-left:.32em;color:var(--marrom)}
+  .embarque h2 i{font-style:normal;color:var(--ouro);letter-spacing:0;margin:0 .5em}
+  .relogio{display:flex;justify-content:center;gap:calc(26 * var(--u));margin-top:calc(26 * var(--u))}
+  .casa{width:calc(186 * var(--u));padding:calc(18 * var(--u)) 0 calc(14 * var(--u));border:calc(2.5 * var(--u)) dashed var(--ouro);border-radius:calc(12 * var(--u));background:rgba(255,255,255,.55);perspective:400px}
+  .casa b{display:block;font-weight:400;font-size:calc(80 * var(--u));line-height:1;color:var(--marrom);font-variant-numeric:tabular-nums;transform-origin:50% 60%}
+  .casa b.vira{animation:vira .45s ease-out}
+  @keyframes vira{0%{transform:rotateX(-85deg);opacity:.2}100%{transform:none;opacity:1}}
+  .casa small{display:block;margin:calc(12 * var(--u)) calc(16 * var(--u)) 0;padding-top:calc(10 * var(--u));border-top:calc(2 * var(--u)) dotted rgba(179,136,62,.7);font-size:calc(21 * var(--u));letter-spacing:.2em;padding-left:.2em;color:var(--ouro-escuro)}
+  .chegou{display:none;margin-top:calc(40 * var(--u));font-size:calc(46 * var(--u));color:var(--ouro-escuro)}
+
+  /* carimbo no selo */
+  .faixa.carimbo canvas{opacity:0;transform:scale(1.12)}
+  .faixa.carimbo.visto canvas{animation:batida .75s cubic-bezier(.3,.7,.3,1) forwards}
+  @keyframes batida{0%{opacity:0;transform:scale(1.12)}55%{opacity:1;transform:scale(.975)}78%{transform:scale(1.008)}100%{opacity:1;transform:none}}
+  .postal{left:0;top:0;width:100%;height:100%;overflow:visible;mix-blend-mode:multiply}
+  .postal .marca{opacity:0;transform-box:fill-box;transform-origin:center}
+  .faixa.carimbo.visto .postal .marca{animation:marca .55s cubic-bezier(.3,.8,.3,1) 1.05s forwards}
+  @keyframes marca{0%{opacity:0;transform:scale(1.9) rotate(-4deg)}60%{opacity:.92;transform:scale(.96)}100%{opacity:.88;transform:none}}
+  .faixa.carimbo.batida2{animation:tremor .18s linear 1}
+  @keyframes tremor{0%,100%{transform:none}33%{transform:translate(1px,1px)}66%{transform:translate(-1px,0)}}
+
+  /* pontos clicáveis */
+  .ponto{position:absolute;transform:translate(-50%,0);width:22%;cursor:pointer;display:block;z-index:3;border-radius:12px}
+  .ponto:focus-visible{outline:2px solid var(--ouro);outline-offset:4px}
+  .ponto::before{content:"";position:absolute;left:50%;top:0;width:62%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;animation:pulso 2.4s ease-in-out infinite}
+
+  /* som */
+  #som{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:30;width:46px;height:46px;border-radius:50%;border:1px solid rgba(160,122,53,.45);background:rgba(246,245,242,.9);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 14px rgba(90,70,30,.15)}
+  #som.ativo{display:flex}
+  #som svg{width:22px;height:22px;fill:none;stroke:var(--ouro-escuro);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  #som .off{display:none} #som.mudo .on{display:none} #som.mudo .off{display:block}
+
+  @media (prefers-reduced-motion: reduce){
+    .reflexo{display:none}
+    .faixa.carimbo canvas{opacity:1;transform:none}
+    .faixa.carimbo.visto canvas,.faixa.carimbo.visto .postal .marca{animation:none}
+    .postal .marca{opacity:.88}
+  }
+</style>
+</head>
+<body>
+<div id="capa" class="tela" role="button" aria-label="Toque para abrir o convite" tabindex="0">
+  <div class="fundo"></div>
+  <div class="quadro"><img src="img/capa.jpg" alt="Envelope do convite com lacre de cera LV — clique para abrir"><div class="pulso"></div></div>
+</div>
+<div id="animacao" class="tela oculta">
+  <div class="fundo"></div>
+  <div class="quadro">
+    <video id="video" src="animacao.mp4" poster="img/poster.jpg" muted playsinline preload="auto"></video>
+    <button id="pular" type="button">Pular ›</button>
+  </div>
+</div>
+<div id="brilho"></div>
+<audio id="musica" src="musica.mp3" preload="auto" loop></audio>
+<button id="som" type="button" aria-label="Pausar música">
+  <svg class="on" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+  <svg class="off" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 10l4 4M21 10l-4 4"/></svg>
+</button>
+
+<main id="convite" hidden>
+  <!-- arte única 1080 × 5244; cada faixa = um bloco (data-y / data-h em px da arte) -->
+  <div class="arte">
+    <div class="faixa" data-y="0" data-h="1000" aria-label="Passaporte. Brasão com monograma LV. Com grande alegria, você está cordialmente convidado(a) para celebrar o casamento de">
+      <div class="reflexo m-brasao" style="top:8%;height:67%;--atraso:1.4s"></div>
+    </div>
+    <div class="faixa" data-y="1000" data-h="260" aria-label="Leif e Virna">
+      <div class="reflexo m-nomes" style="top:5.769%;height:80.769%;--atraso:2.6s"></div>
+    </div>
+    <div class="faixa" data-y="1260" data-h="220" aria-label="10 de dezembro de 2026, às 18:30"></div>
+    <div class="faixa" data-y="1480" data-h="960" aria-label="Foto de Leif e Virna"></div>
+    <div class="faixa" data-y="2440" data-h="160" aria-label="Casamento Leif e Virna"></div>
+    <div class="faixa" data-y="2600" data-h="400" aria-label="Data: 10 de dezembro de 2026 às 18:30. Endereço: Espaço Meriam Gallo Barouh, Cerimonial Caminho das Árvores"></div>
+
+    <div class="faixa" data-y="3000" data-h="380" id="faixa-rota">
+      <svg class="camada rota" id="rota" viewBox="0 0 1080 380" aria-hidden="true">
+        <g id="pontos"></g>
+        <g class="aviao" id="aviao"><path transform="translate(-30,-30) scale(2.5) rotate(90 12 12)" d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></g>
+      </svg>
+      <section class="camada embarque" style="top:15.5%" aria-label="Contagem regressiva para o casamento">
+        <h2><i>✈</i>EMBARQUE EM<i>✈</i></h2>
+        <div class="relogio" id="relogio">
+          <div class="casa"><b id="d">--</b><small>DIAS</small></div>
+          <div class="casa"><b id="h">--</b><small>HORAS</small></div>
+          <div class="casa"><b id="m">--</b><small>MIN</small></div>
+          <div class="casa"><b id="s">--</b><small>SEG</small></div>
+        </div>
+        <div class="chegou" id="chegou">Chegou o grande dia!</div>
+      </section>
+    </div>
+
+    <div class="faixa" data-y="3380" data-h="140" aria-label="Boarding pass">
+      <div class="reflexo" style="top:0;height:90.7%;--atraso:3.6s"></div>
+    </div>
+    <div class="faixa" data-y="3520" data-h="400" aria-label="Localização, confirme sua presença, site e lista de presentes">
+      <a class="ponto" style="left:26.7%;top:24%;height:65%" target="_blank" rel="noopener" aria-label="Abrir localização no Google Maps"
+         href="https://www.google.com/maps/place/Cerimonial+Caminho+das+%C3%81rvores/@-12.982016,-38.4592898,17z/data=!3m1!4b1!4m6!3m5!1s0x7161b9442adc3a9:0xe9fe8963acc9b728!8m2!3d-12.9820212!4d-38.4567149!16s%2Fg%2F11yqqqkmc7"></a>
+      <a class="ponto" style="left:52.6%;top:24%;height:65%" target="_blank" rel="noopener" aria-label="Confirmar presença"
+         href="https://sites.icasei.com.br/leifevirna/pages/38335510"></a>
+      <a class="ponto" style="left:78.1%;top:24%;height:65%" target="_blank" rel="noopener" aria-label="Site e lista de presentes"
+         href="https://sites.icasei.com.br/leifevirna/home"></a>
+    </div>
+    <div class="faixa" data-y="3920" data-h="200" aria-label="Clique nos ícones para interagir"></div>
+    <div class="faixa carimbo" data-y="4120" data-h="840" aria-label="Foto de Leif e Virna em moldura de selo postal">
+      <svg class="camada postal" viewBox="0 0 1080 840" aria-hidden="true">
+        <defs>
+          <filter id="tinta" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"/>
+            <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.5 1.55" result="m"/>
+            <feComposite in="SourceGraphic" in2="m" operator="in"/>
+          </filter>
+          <path id="arco" d="M 752 135 a 83 83 0 1 1 166 0 a 83 83 0 1 1 -166 0"/>
+        </defs>
+        <g class="marca" filter="url(#tinta)" fill="none" stroke="#9a7330" transform="rotate(-12 835 135)">
+          <circle cx="835" cy="135" r="104" stroke-width="5"/>
+          <circle cx="835" cy="135" r="62" stroke-width="3"/>
+          <text font-family="Cutive, Courier New, monospace" font-size="23" fill="#9a7330" stroke="none">
+            <textPath href="#arco" startOffset="0" textLength="505" lengthAdjust="spacing">✦ PASSAPORTE ✦ LEIF &amp; VIRNA</textPath>
+          </text>
+          <text x="835" y="128" text-anchor="middle" font-family="Cutive, Courier New, monospace" font-size="27" fill="#9a7330" stroke="none">10·12</text>
+          <text x="835" y="160" text-anchor="middle" font-family="Cutive, Courier New, monospace" font-size="27" fill="#9a7330" stroke="none">2026</text>
+          <path stroke-width="5" stroke-linecap="round" d="M948 95 q 18 -12 36 0 t 36 0 t 36 0 M952 135 q 18 -12 36 0 t 36 0 t 36 0 M948 175 q 18 -12 36 0 t 36 0 t 36 0"/>
+        </g>
+      </svg>
+    </div>
+    <div class="faixa" data-y="4960" data-h="284" aria-label="Esperamos por você"></div>
+  </div>
+</main>
+
+<script>
+(function(){
+  var capa=document.getElementById('capa'), anim=document.getElementById('animacao'),
+      video=document.getElementById('video'), brilho=document.getElementById('brilho'),
+      convite=document.getElementById('convite'), musica=document.getElementById('musica'),
+      som=document.getElementById('som'), aberto=false, terminou=false;
+  var semMovimento=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  try{ video.load(); }catch(e){}
+
+  /* música: começa no toque; continua tocando ao abrir os links em nova aba */
+  function fadeIn(){ musica.volume=0; var v=0; var t=setInterval(function(){ v+=0.05; try{ musica.volume=Math.min(v,0.85); }catch(e){} if(v>=0.85) clearInterval(t); },150); }
+  function tocar(){
+    var p=musica.play();
+    if(p&&p.then) p.then(function(){ som.classList.add('ativo'); fadeIn(); }).catch(function(){ som.classList.add('ativo','mudo'); });
+    else som.classList.add('ativo');
+  }
+  som.addEventListener('click',function(){
+    if(musica.paused){ musica.play(); som.classList.remove('mudo'); som.setAttribute('aria-label','Pausar música'); }
+    else { musica.pause(); som.classList.add('mudo'); som.setAttribute('aria-label','Tocar música'); }
+  });
+  /* se o celular pausar a música em segundo plano, retoma ao voltar para o convite */
+  var querTocar=false;
+  musica.addEventListener('play',function(){ querTocar=true; });
+  som.addEventListener('click',function(){ querTocar=!musica.paused; });
+  function retomar(){ if(querTocar && musica.paused && !som.classList.contains('mudo')){ var p=musica.play(); if(p&&p.catch) p.catch(function(){}); } }
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) retomar(); });
+  window.addEventListener('focus',retomar);
+  window.addEventListener('pageshow',retomar);
+
+  function abrir(){
+    if(aberto) return; aberto=true;
+    tocar();
+    anim.classList.remove('oculta'); capa.classList.add('oculta');
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ anim.classList.add('tocando'); }); });
+    var p=video.play(); if(p&&p.catch) p.catch(function(){ mostrarConvite(); });
+    setTimeout(function(){ anim.classList.add('mostra-pular'); },1500);
+    setTimeout(mostrarConvite,14000);
+  }
+  function mostrarConvite(){
+    if(terminou) return; terminou=true;
+    brilho.style.opacity='1';
+    setTimeout(function(){
+      convite.hidden=false; window.scrollTo(0,0);
+      anim.classList.add('oculta'); try{ video.pause(); }catch(e){}
+      requestAnimationFrame(function(){ convite.classList.add('visivel'); iniciarEntrada(); });
+      brilho.style.opacity='0';
+      setTimeout(function(){ capa.remove(); anim.remove(); },1000);
+    },650);
+  }
+  capa.addEventListener('click',abrir);
+  capa.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); abrir(); } });
+  video.addEventListener('ended',mostrarConvite);
+  document.getElementById('pular').addEventListener('click',mostrarConvite);
+
+  /* ---------- faixas ---------- */
+  var LARG=1080, arteImg=new Image(), pronta=new Promise(function(ok){ arteImg.onload=function(){ ok(arteImg); }; });
+  arteImg.src='img/arte.jpg';
+  var faixas=[].slice.call(document.querySelectorAll('.faixa'));
+  faixas.forEach(function(f){
+    var h=+f.dataset.h, c=document.createElement('canvas');
+    c.width=LARG; c.height=h; f.style.aspectRatio=LARG+' / '+h;
+    c.setAttribute('role','img'); if(f.getAttribute('aria-label')) c.setAttribute('aria-label',f.getAttribute('aria-label'));
+    f.insertBefore(c,f.firstChild); f._canvas=c;
+    if(!f.classList.contains('carimbo') && !semMovimento) f.classList.add('entra');
+  });
+  function desenha(f){
+    return pronta.then(function(img){
+      var c=f._canvas, ctx=c.getContext('2d');
+      ctx.drawImage(img,0,+f.dataset.y,c.width,c.height,0,0,c.width,c.height);
+    });
+  }
+  function revelar(f){
+    if(f._feito) return; f._feito=true;
+    desenha(f).then(function(){
+      f.classList.add('visto');
+      if(f.classList.contains('carimbo') && !semMovimento){
+        setTimeout(function(){ f.classList.add('batida2'); },1350);
+      }
+    });
+  }
+  function iniciarEntrada(){
+    if(!('IntersectionObserver' in window)){ faixas.forEach(revelar); return; }
+    var obs=new IntersectionObserver(function(es){ es.forEach(function(e){
+      if(!e.isIntersecting) return; revelar(e.target); obs.unobserve(e.target);
+    }); },{threshold:0.2});
+    faixas.forEach(function(f){ obs.observe(f); });
+    iniciarRota();
+  }
+
+  /* ---------- rota com avião sobre a linha pontilhada ---------- */
+  var XS=[158.5,176.5,194,211.5,229.5,247,264.5,282.5,299.5,317.5,335,352.5,370.5,388,405.5,423.5,440.5,458.5,476,493.5,511.5,529,551,568.5,586.5,604,621.5,639.5,656.5,674.5,692,709.5,727.5,745,762.5,780.5,797.5,815.5,833,850.5,868.5,886,903.5,921.5];
+  var LINHA_Y=22.5, NS='http://www.w3.org/2000/svg', gp=document.getElementById('pontos'), pts=[];
+  XS.forEach(function(x){ var c=document.createElementNS(NS,'circle'); c.setAttribute('cx',x); c.setAttribute('cy',LINHA_Y); c.setAttribute('r',3.6); gp.appendChild(c); pts.push(c); });
+  var rota=document.getElementById('rota'), aviao=document.getElementById('aviao'), faixaRota=document.getElementById('faixa-rota');
+  function posAviao(p){
+    var x=110+p*(965-110), y=LINHA_Y-Math.sin(p*Math.PI)*6, ang=-Math.cos(p*Math.PI)*4;
+    aviao.setAttribute('transform','translate('+x.toFixed(1)+','+y.toFixed(1)+') rotate('+ang.toFixed(1)+')');
+    aviao.style.opacity=p<=0?0:Math.min(1,p*10);
+    pts.forEach(function(c,i){ c.classList.toggle('on', XS[i] < x-34); });
+  }
+  function iniciarRota(){
+    if(semMovimento){ posAviao(1); return; }
+    var pendente=false;
+    function calc(){
+      pendente=false;
+      var r=rota.getBoundingClientRect(), vh=window.innerHeight;
+      var y=r.top + r.height*(LINHA_Y/380);
+      var p=(vh*0.92 - y)/(vh*0.5); p=Math.max(0,Math.min(1,p));
+      if(!faixaRota.classList.contains('visto')) p=0;
+      posAviao(p);
+    }
+    function pedir(){ if(!pendente){ pendente=true; requestAnimationFrame(calc); } }
+    window.addEventListener('scroll',pedir,{passive:true});
+    window.addEventListener('resize',pedir);
+    setInterval(pedir,400);
+    pedir();
+  }
+
+  /* ---------- contagem regressiva ---------- */
+  var rel=document.getElementById('relogio'), alvo=new Date('2026-12-10T18:30:00-03:00').getTime();
+  var dois=function(n){ return (n<10?'0':'')+n; };
+  function poe(id,v){ var el=document.getElementById(id); if(el.textContent!==String(v)){ el.textContent=v; if(!semMovimento){ el.classList.remove('vira'); void el.offsetWidth; el.classList.add('vira'); } } }
+  (function atualiza(){
+    var r=alvo-Date.now();
+    if(r<=0){ rel.style.display='none'; document.getElementById('chegou').style.display='block'; return; }
+    var s=Math.floor(r/1000);
+    poe('d',Math.floor(s/86400)); poe('h',dois(Math.floor(s%86400/3600)));
+    poe('m',dois(Math.floor(s%3600/60))); poe('s',dois(s%60));
+    setTimeout(atualiza,1000);
+  })();
+})();
+</script>
+</body>
+</html>
